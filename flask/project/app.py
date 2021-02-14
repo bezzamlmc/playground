@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 
 def index():
-    return render_template('index.html')
+    return render_template('index.html',current_title='My Task Manager')
 
 
 if __name__ == '__main__':
