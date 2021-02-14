@@ -9,9 +9,11 @@ from flask import Flask
 app = Flask(__name__)
 
 @app.route('/')
+@app.route('/index')
+
 
 def index():
-    return 'Bonjour le monde'
+    return '<h1>Bonjour</h1> Le Monde!'
 
 
 if __name__ == '__main__':
