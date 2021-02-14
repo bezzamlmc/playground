@@ -1,1 +1,1 @@
-# Learning and paying ground for the curious programmer
+# Learning and playing ground for the curious programmer
