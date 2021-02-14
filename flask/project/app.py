@@ -4,7 +4,7 @@ Created on Sat Feb 13 18:35:54 2021
 
 @author: laura
 """
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 
 def index():
-    return '<h1>Bonjour</h1> Le Monde!'
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
