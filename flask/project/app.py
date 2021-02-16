@@ -5,9 +5,13 @@ Created on Sat Feb 13 18:35:54 2021
 @author: laura
 """
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'somethingunique'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///datalmc.db'
+
+db = SQLAlchemy(app)
 
 from routes import *
 
