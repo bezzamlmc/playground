@@ -2,4 +2,9 @@
 
 {% block main %}
 <p>This is about learning Flask and templates</p>
+<form action="post">
+    {{form.crsf_token}}
+    {{form.title}}
+    {{form.submit}}
+</form>
 {% endblock %}

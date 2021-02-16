@@ -7,6 +7,7 @@ Created on Sat Feb 13 18:35:54 2021
 from flask import Flask
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'somethingunique'
 
 from routes import *
 
