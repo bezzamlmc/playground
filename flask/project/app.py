@@ -4,21 +4,11 @@ Created on Sat Feb 13 18:35:54 2021
 
 @author: laura
 """
-from flask import Flask, render_template
+from flask import Flask
 
 app = Flask(__name__)
 
-@app.route('/')
-@app.route('/index')
-
-
-def index():
-    return render_template('index.html',current_title='My Task Manager')
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
+from routes import *
 
 if __name__ == '__main__':
     app.run(debug=True)
