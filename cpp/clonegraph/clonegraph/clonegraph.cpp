@@ -112,14 +112,14 @@ GraphNode* cloneGraph(GraphNode* node)
     GraphNode* newNode = buildSolo(node->label, node->value);
     cachedAddress[node] = newNode;
 #if defined DEBUG2
-    std::cout << "Addresses stored in cache " << static_cast<void*>(node) << " " << static_cast<void*>(node) << std::endl;
+    std::cout << "Addresses stored in cache " << static_cast<void*>(node) << " " << static_cast<void*>(newNode) << std::endl;
 #endif
     if (node->neighbours.empty()) {
         return newNode;
     }
     for (auto it : node->neighbours) {
-#if DEBUG2
-        std::cout << "Checking if " << static_cast<void*>(node) << " was in cache" << std::endl;
+#if defined DEBUG2
+        std::cout << "Checking if " << static_cast<void*>(it) << " was in cache" << std::endl;
         if (cachedAddress.find(it) == cachedAddress.end())
             std::cout << "Not found in cache " << std::endl;
         else
