@@ -57,16 +57,29 @@ void connectTo(GraphNode* node1, GraphNode* node2)
 
 GraphNode* buildExample(const int& sample)
 {
-    //    if (sample == 1) {
-    GraphNode* node0 = buildSolo("node0", 0);
     GraphNode* node1 = buildSolo("node1", 1);
-    GraphNode* node2 = buildSolo("node2", 2);
-    connectTo(node0, node1);
-    connectTo(node0, node2);
-    connectTo(node2, node0);
-    return node0;
-
-    //    }
+    if (sample == 1) {
+        GraphNode* node2 = buildSolo("node2", 2);
+        GraphNode* node3 = buildSolo("node3", 3);
+        connectTo(node1, node2);
+        connectTo(node1, node3);
+        connectTo(node3, node1);
+    }
+    else if (sample == 2) {
+ //       [[2, 4], [1, 3], [2, 4], [1, 3]]
+        GraphNode* node2 = buildSolo("node2", 2);
+        GraphNode* node3 = buildSolo("node3", 3);
+        GraphNode* node4 = buildSolo("node4", 4);
+        connectTo(node1, node2);
+        connectTo(node1, node4);
+        connectTo(node2, node1);
+        connectTo(node2, node3);
+        connectTo(node3, node2);
+        connectTo(node3, node4);
+        connectTo(node4, node1);
+        connectTo(node4, node3);
+    }
+    return node1;
 }
 
 void printoutNode(GraphNode* node)
@@ -86,6 +99,8 @@ void printoutNode(GraphNode* node)
 
 void printoutGraph(GraphNode* node)
 {
+    if (node == NULL)
+        std::cout << "Empty graph \n";
     std::cout << "Printing graph for " << node->label << std::endl;
     std::vector<GraphNode*> cached;
     std::queue<GraphNode*> pending;
@@ -110,6 +125,8 @@ void printoutGraph(GraphNode* node)
 
 GraphNode* cloneGraph(GraphNode* node)
 {
+    if (node == NULL)
+        return NULL;
     std::map<GraphNode*, GraphNode*> cachedAddress;
     std::queue<GraphNode*> pending;
     GraphNode* newNode = buildSolo(node->label, node->value);
@@ -152,7 +169,8 @@ GraphNode* cloneGraph(GraphNode* node)
 int main()
 {
     cout << "Print graph\n";
-    GraphNode* myGraph = buildExample(1);
+//    GraphNode* myGraph = buildExample(1);
+    GraphNode* myGraph = buildExample(0);
     printoutGraph(myGraph);
     cout << "Cloned graph " << endl;
     GraphNode* newGraph = cloneGraph(myGraph);

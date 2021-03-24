@@ -2,4 +2,13 @@ flask/project/__pycache__/
 cpp/clonegraph/.vs/clonegraph/v16/.suo
 cpp/clonegraph/.vs/
 cpp/clonegraph/clonegraph/Debug/
-cpp/
+cpp/clonegraphnorec/.vs/
+cpp/clonegraphnorec/Debug
+cpp/clonegraph/Debug/clonegraph.pdb
+cpp/clonegraph/Debug/clonegraph.ilk
+cpp/clonegraph/Debug/clonegraph.exe
+cpp/clonegraph/clonegraph/clonegraph.vcxproj.user
+cpp/clonegraph/clonegraph/clonegraph.vcxproj.filters
+cpp/clonegraphnorec/clonegraphnorec/Debug/
+cpp/clonegraphnorec/clonegraphnorec/clonegraphnorec.vcxproj.filters
+cpp/clonegraphnorec/clonegraphnorec/clonegraphnorec.vcxproj.user
