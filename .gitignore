@@ -12,3 +12,10 @@ cpp/clonegraph/clonegraph/clonegraph.vcxproj.filters
 cpp/clonegraphnorec/clonegraphnorec/Debug/
 cpp/clonegraphnorec/clonegraphnorec/clonegraphnorec.vcxproj.filters
 cpp/clonegraphnorec/clonegraphnorec/clonegraphnorec.vcxproj.user
+devices/humtemp.py
+devices/__pycache__/
+cpp/minknightmoves/x64/
+cpp/minknightmoves/minknightmoves/x64/
+cpp/minknightmoves/minknightmoves/Debug/
+cpp/minknightmoves/Debug/
+cpp/minknightmoves/.vs/
