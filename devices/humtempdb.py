@@ -87,9 +87,6 @@ class HumTempDB:
         min(temperature), max(temperature) 
         FROM samples 
         WHERE id > ? """
-        findHAvg = cur.execute("SELECT avg(humidity) FROM samples")
-        havg = findHAvg.fetchone()[0]
-        print(havg)
         
         idmin = self.lastId - lastn
         findAll = cur.execute(sql,(idmin,))

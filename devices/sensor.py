@@ -10,7 +10,8 @@ import sys
 import os
 import datetime
 import time
-from PyQt5.QtWidgets import QDialog, QApplication
+from PyQt5.QtWidgets import QDialog, QApplication, QVBoxLayout
+from PyQt5.QtChart import QChart, QChartView, QLineSeries
 from humtemp import Ui_sensorDialog as sensorDialog
 from pseudoSensor import PseudoSensor
 from humtempdb import HumTempDB
@@ -69,10 +70,55 @@ class SensorWindow(QDialog):
         
     def slot_stats(self):
         print("stats")
-        self.db.stats_samples(10)
+        stats = self.db.stats_samples(10)
+        myText = "<html style='color:blue'><i>Average humidity: </i></html>" + \
+            str(round(stats[0])) + "\n"
+        self.ui.textEdit.append(myText)
+        myText = "<html style='color:blue'><i>Minimum humidity: </i></html>" + \
+            str(round(stats[1])) + "\n"
+        self.ui.textEdit.append(myText)
+        myText = "<html style='color:blue'><i>Maximum humidity: </i></html>" + \
+            str(round(stats[2])) + "\n"
+        self.ui.textEdit.append(myText)
+        myText = "<html style='color:green'><i>Average temperature: </i></html>" + \
+            str(round(stats[3])) + "\n"
+        self.ui.textEdit.append(myText)
+        myText = "<html style='color:green'><i>Minimum temperature: </i></html>" + \
+            str(round(stats[4])) + "\n"
+        self.ui.textEdit.append(myText)
+        myText = "<html style='color:green'><i>Maximum temperature: </i></html>" + \
+            str(round(stats[5])) + "\n"
+        self.ui.textEdit.append(myText)
         
-    def slot_display():
+    def slot_display(self):
         print("display")
+        rows = self.db.query_samples(10)
+        seriesHum = QLineSeries()
+        seriesTemp = QLineSeries()
+        for sample in rows:
+            print(sample)
+            seriesHum.append(sample[0],sample[2])
+            seriesTemp.append(sample[0],sample[3])
+        self.plot_series("Humidity",seriesHum)
+        self.plot_series("Temperature",seriesTemp)
+        print(rows)
+        
+    def plot_series(self,title,series):
+        myChart = QChart()
+        myChart.setTitle(title)
+        myChart.addSeries(series)
+        myChart.createDefaultAxes()       
+        myChartView = QChartView(myChart)
+        myDisplayDialog = QDialog(self)
+        layout = QVBoxLayout()
+        layout.addWidget(myChartView)
+        myDisplayDialog.setWindowTitle(title)
+        myDisplayDialog.setModal(0)
+        myDisplayDialog.setLayout(layout)
+        myDisplayDialog.setMinimumHeight(800)
+        myDisplayDialog.setMinimumWidth(800)
+        myDisplayDialog.adjustSize()
+        myDisplayDialog.show()
         
     def slot_quit(self):
         db.shutdown()
