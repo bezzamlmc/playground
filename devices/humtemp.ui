@@ -247,22 +247,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>quitPB</sender>
-   <signal>clicked()</signal>
-   <receiver>sensorDialog</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>87</x>
-     <y>411</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>383</x>
-     <y>215</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

@@ -19,3 +19,5 @@ cpp/minknightmoves/minknightmoves/x64/
 cpp/minknightmoves/minknightmoves/Debug/
 cpp/minknightmoves/Debug/
 cpp/minknightmoves/.vs/
+cpp/minknightmoves/minknightmoves/minknightmoves.vcxproj.filters
+cpp/minknightmoves/minknightmoves/minknightmoves.vcxproj.user
