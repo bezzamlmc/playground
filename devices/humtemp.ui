@@ -27,7 +27,11 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" rowspan="4">
-    <widget class="QTextEdit" name="textEdit"/>
+    <widget class="QTextEdit" name="textEdit">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item row="0" column="1">
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -206,7 +210,11 @@
       </spacer>
      </item>
      <item>
-      <widget class="QSpinBox" name="alarmHSB"/>
+      <widget class="QSpinBox" name="alarmHSB">
+       <property name="value">
+        <number>50</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -233,7 +241,11 @@
       </spacer>
      </item>
      <item>
-      <widget class="QSpinBox" name="alarmTSB"/>
+      <widget class="QSpinBox" name="alarmTSB">
+       <property name="value">
+        <number>80</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

@@ -58,10 +58,10 @@ class HumTempDB:
         """ Insert an id, timestamp, humidity, temperature record"""
         self.lastId  = self.lastId + 1
 
-        sql = """INSERT INTO samples(seld.lastId,timestamp,humidity,temperature) 
-                VALUES(?, ?, ?,?) """
+        sql = """INSERT INTO samples(id,timestamp,humidity,temperature) 
+                VALUES(?, ?, ?, ?) """
         cur = self.conn.cursor()
-        cur.execute(sql)
+        cur.execute(sql,(self.lastId,timestamp,humidity,temperature))
         self.conn.commit()
         return cur.lastrowid
 
