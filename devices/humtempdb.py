@@ -16,6 +16,7 @@ class HumTempDB:
         self.setup_table()
         
     def setup_table(self):
+        """Setup the database/table"""
         sql_create_samples_table = """CREATE TABLE IF NOT EXISTS samples (
                                         id integer PRIMARY KEY,
                                         timestamp text,
@@ -66,6 +67,7 @@ class HumTempDB:
         return cur.lastrowid
 
     def total_samples(self):
+        """Count the # of samples stored in the database"""
         cur = self.conn.cursor()
         cur.execute("SELECT * FROM samples")
         results = cur.fetchall()
@@ -96,6 +98,7 @@ class HumTempDB:
         return all
     
     def shutdown(self):
+        """Shutdown database"""
         self.conn.commit()
         self.conn.close()
 

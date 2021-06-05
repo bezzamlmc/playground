@@ -17,13 +17,13 @@ from pseudoSensor import PseudoSensor
 from humtempdb import HumTempDB
 
 class SensorWindow(QDialog):
+    """Sensor Window Dialog Class input database and sensor class"""
     def __init__(self, ps, db):
         super().__init__()
         self.ui = sensorDialog()
         self.ui.setupUi(self)
         
-        self.db = db
-        
+        self.db = db       
         self.ps = ps
 
 # Connections added
@@ -36,6 +36,8 @@ class SensorWindow(QDialog):
         self.show()
         
     def get_1sample(self):
+        """ Acquire single sample and log it to screen, 
+        checking alarm values"""
         h,t = self.ps.generate_values()
         tmax = self.ui.alarmTSB.value()
         if self.ui.unitCB.currentIndex() == 1:
@@ -61,14 +63,17 @@ class SensorWindow(QDialog):
             self.ui.textEdit.append(myText)
         
     def slot_read1(self):
+        """Slot to acquire a single sensor reading"""
         self.get_1sample()
         
     def slot_read10(self):
+        """Slot to acquire 1 second space readings from sensor"""
         for i in range(10):
             self.get_1sample()
             time.sleep(1)
         
     def slot_stats(self):
+        """Slot that produces stats (avg,min,max) for the last 10 readings"""
         print("stats")
         stats = self.db.stats_samples(10)
         myText = "<html style='color:blue'><i>Average humidity: </i></html>" + \
