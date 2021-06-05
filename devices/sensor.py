@@ -9,6 +9,7 @@ Created on Fri Jun  4 13:29:30 2021
 import sys
 import os
 import datetime
+import time
 from PyQt5.QtWidgets import QDialog, QApplication
 from humtemp import Ui_sensorDialog as sensorDialog
 from pseudoSensor import PseudoSensor
@@ -62,10 +63,13 @@ class SensorWindow(QDialog):
         self.get_1sample()
         
     def slot_read10(self):
-        print("read1")
+        for i in range(10):
+            self.get_1sample()
+            time.sleep(1)
         
     def slot_stats(self):
         print("stats")
+        self.db.stats_samples(10)
         
     def slot_display():
         print("display")

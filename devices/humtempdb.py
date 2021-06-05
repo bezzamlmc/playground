@@ -73,10 +73,30 @@ class HumTempDB:
 
     def query_samples(self,lastn):
         """Retrieve the last n samples"""
-        cur = self.conn.cursor()  
-        cur.execute("SELECT * FROM samples ORDER BY id DESC LIMIT ? ", (lastn))
+        cur = self.conn.cursor() 
+        idmin = self.lastId - lastn
+        cur.execute("SELECT * FROM samples WHERE id > ? ", (idmin,))
         rows = cur.fetchall()    
         return rows
+    
+    def stats_samples(self,lastn):
+        """Retrieve stats for the last n samples"""
+        cur = self.conn.cursor() 
+        sql = \
+        """SELECT avg(humidity),min(humidity), max(humidity), avg(temperature), 
+        min(temperature), max(temperature) 
+        FROM samples 
+        WHERE id > ? """
+        findHAvg = cur.execute("SELECT avg(humidity) FROM samples")
+        havg = findHAvg.fetchone()[0]
+        print(havg)
+        
+        idmin = self.lastId - lastn
+        findAll = cur.execute(sql,(idmin,))
+        all = findAll.fetchone()
+        print(all)
+        
+        return all
     
     def shutdown(self):
         self.conn.commit()
