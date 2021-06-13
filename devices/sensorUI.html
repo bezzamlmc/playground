@@ -104,6 +104,11 @@
 
 // Websocket variable
 	var socket = new WebSocket(myWebSocket);
+	socket.onerror = socketErrorAlert;
+
+	function socketErrorAlert(event){
+		alert("Server/socket error: " + event.data);
+	}
 
 // Websocket event handlers
 	if (socket){
@@ -157,11 +162,17 @@
 	});
 
 	closeButton.addEventListener("click", function(event){
-		document.close();
+		socket.close();
+		alert("Server connection closed - Close tab manually");
 	});
 
 	function read1(){
-		socket.send(jsonSingleString);
+		if (socket.readyState !== WebSocket.CLOSED && socket.readyState !== WebSocket.CLOSING) {
+			socket.send(jsonSingleString);
+		}
+		else {
+			alert("Server or socket not available");
+		}
 	}
 
 	function processResponse(jsonText){
