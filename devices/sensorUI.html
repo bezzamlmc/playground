@@ -133,6 +133,7 @@
 	var hum = 0;
 	var tAlarm = 100;
 	var hAlarm = 100;
+	var hMin, hMax, hAvg, tMin, tMax, tAvg;
 
 // Button handlers
 	var singleRequestButton = document.getElementById("singlereq");
@@ -175,10 +176,10 @@
 			showResults(text1);
 			hAlarm = spinBoxH.value;
 			if (hum > hAlarm) {
-				showResults("<b>Alarm: humidity level exceeded!<\b>");
+				showResults("<b>Alarm: humidity level exceeded!</b>");
 			}
 			if (temp > tAlarm) {
-				showResults("<b>Alarm: temperature level exceeded!<\b>");
+				showResults("<b>Alarm: temperature level exceeded!</b>");
 			}
 			tAlarm = spinBoxT.value;
 			console.log(`Got Humidity ${hum} Temperature ${temp}`);
@@ -190,7 +191,7 @@
 			hAvg = jsonObject["humidity-avg"];
 			tMin = jsonObject["temperature-min"];
 			tMax = jsonObject["temperature-max"];
-			tavg = jsonObject["temperature-avg"];
+			tAvg = jsonObject["temperature-avg"];
 			var text2 = `+++ Minimum Humidity ${hMin} +++ Maximum Humidity ${hMax} +++ Average Humidity ${hAvg}`;
 			showResults(text2);
 			text2 = `+++ Minimum Temperature ${tMin} +++ Maximum Temperature ${tMax} +++ Average Temperature ${tAvg}`;

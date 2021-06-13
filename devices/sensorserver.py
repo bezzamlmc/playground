@@ -4,14 +4,19 @@ import tornado.websocket
 import nest_asyncio
 import logging
 import json
+import datetime
+from pseudoSensor import PseudoSensor
+from humtempdb import HumTempDB
 
 class Application(tornado.web.Application):
-	def __init__(self):
+	def __init__(self,db,ps):
 		logging.basicConfig(filename='sensorserver.log', filemode='w', level=logging.DEBUG)
 		handlers = [(r"/", MainHandler), 
 		(r"/ws", WSHandler)]
 		settings = dict(debug=True)
 		tornado.web.Application.__init__(self, handlers, settings)
+		self.ps = ps
+		self.db = db
 
 class MainHandler(tornado.web.RequestHandler) :
     def get(self):
@@ -30,23 +35,46 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 		action = jsonObject["action"]
 		response = {}
 		if action == "single":
-			response["timestamp"] = "9000"
+			ts, hr, tr = self.get_1sample()
+			response["timestamp"] = ts
 			response["response"] = "reading"
-			response["humidity"] = 50
-			response["temperature"] = 20
+			response["humidity"] = hr
+			response["temperature"] = tr
 		elif action == "stats":
+			stats = self.get_stats()
 			response["response"] = "stats"
-			response["humidity-min"] = 0
-			response["humidity-max"] = 100
-			response["humidity-avg"] = 30
-			response["temperature-min"] = 0
-			response["temperature-max"] = 80
-			response["temperature-avg"] = 40
+			response["humidity-min"] = stats[1]
+			response["humidity-max"] = stats[2]
+			response["humidity-avg"] = stats[0]
+			response["temperature-min"] = stats[4]
+			response["temperature-max"] = stats[5]
+			response["temperature-avg"] = stats[3]
 		self.write_message(json.dumps(response))
+
+	def get_1sample(self):
+		logging.info("Getting 1 sample")
+		h,t = self.application.ps.generate_values()
+		hr = round(h)
+		tr = round(t)
+		ts = get_timestamp()
+		self.application.db.insert_record(ts,hr,tr)
+		return ts,hr,tr
+
+	def get_stats(self):
+		stats = self.application.db.stats_samples(10)
+		return stats
+
+def get_timestamp():
+	ct = datetime.datetime.now()
+	ts = ct.timestamp()
+	return ts
 
 
 if __name__ == "__main__":
     nest_asyncio.apply()
-    app =Application() 
+    database = r"C:\Users\laura\work\db\humtemp.db"
+    db = HumTempDB(database)
+    ps = PseudoSensor()
+    app = Application(db,ps) 
     app.listen(8888)
     tornado.ioloop.IOLoop.current().start()
