@@ -23,3 +23,5 @@ cpp/minknightmoves/minknightmoves/minknightmoves.vcxproj.filters
 cpp/minknightmoves/minknightmoves/minknightmoves.vcxproj.user
 devices/.nvimlog
 devices/sensorserver.log
+devices/node_modules/
+devices/scripts/.nvimlog

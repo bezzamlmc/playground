@@ -44,7 +44,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 			response["humidity"] = hr
 			response["temperature"] = tr
 		elif action == "stats":
-			stats = self.get_stats()
+			rows, stats = self.get_stats()
 			response["response"] = "stats"
 			response["humidity-min"] = stats[1]
 			response["humidity-max"] = stats[2]
@@ -52,6 +52,13 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 			response["temperature-min"] = stats[4]
 			response["temperature-max"] = stats[5]
 			response["temperature-avg"] = stats[3]
+			dataHum = []
+			dataTemp = []
+			for sample in rows:
+				dataHum.append(sample[2])
+				dataTemp.append(sample[3])
+			response["humidity-array"] = dataHum
+			response["temperature-array"] = dataTemp
 		self.write_message(json.dumps(response))
 
 	def get_1sample(self):
@@ -64,8 +71,9 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 		return ts,hr,tr
 
 	def get_stats(self):
+		rows = self.application.db.query_samples(10)
 		stats = self.application.db.stats_samples(10)
-		return stats
+		return rows, stats
 
 def get_timestamp():
 	ct = datetime.datetime.now()
