@@ -5,222 +5,65 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Sensor Data Manager</title>
-	<style>
-
-		.button {
-			background-color: blue; 
-			width: 400px;
-			border: 2px solid black;
-			color: white;
-			padding: 15px 32px;
-			text-align: center;
-			text-decoration: none;
-			display: inline-block;
-			font-size: 18px;
-			margin-right: 20px;
-	     	 }
-
-		 .container1 {
-			 border: 2x solid black;
-			 border-radius: 2px;
-			 display: flex;
-			 justify-content: flex-start;
-		 }
-
-		 .container2{
-			 border: 2x solid black;
-			 border-radius: 2px;
-			 display: flexi-column;
-			 justify-content: space-around;
-		 }
-
-		 .spinb {
-			 width: 30px;
-		 }
-
-		 .lb {
-			 white-space: pre;
-		 }
-
-	</style>
+	<link rel="stylesheet" href="css/style.css" type="text/css">
+	<script src="scripts/script.js" type="text/javascript" defer></script>
 </head>
 <body>
-	<h1>Sensor Data Manager</h1>
+	<header>
+		<h1>Sensor Data Manager</h1>
+	</header>
 
-	<div class="container1">
+	<main>
+		<div class="container1">
 
-		<a href="#" class="button" id="singlereq">
-			Request one humidity-temperature reading
-		</a>
+			<a href="#" class="button" id="singlereq">
+				Request one humidity-temperature reading
+			</a>
 
-		<a href="#" class="button" id="multireq">
-			Request 10 humidity-temperature readings
-		</a>
+			<a href="#" class="button" id="multireq">
+				Request 10 humidity-temperature readings
+			</a>
 
-		<a href="#" class="button" id="statsreq">
-			Request stats for last 10 samples 
-		</a>
-	</div>
-
-	<br>
-	<br>
-
-	<div class="container2">
-
-		<div>
-			<label class="lb" for="hum">Alarm for humidity     :</label>
-			<input type="number" name="hum" class="spinb" id="spinh" min="0" max="100" step="1" value="50"  size=6>
+			<a href="#" class="button" id="statsreq">
+				Request stats for last 10 samples 
+			</a>
 		</div>
 
+		<br>
+		<br>
 
-		<div>
-			<label class="lb" for="temp">Alarm for temperature:</label>
-			<input type="number" name="temp" class="spinb" id="spint" min="-20" max="100" step="1" value="50"  size=6>
+		<div class="container2">
+
+			<div>
+				<label class="lb" for="hum"><b>Alarm for humidity:</b></label>
+				<input type="number" name="hum" class="spinb" id="spinh" min="0" max="100" step="1" value="50"  size=6>
+			</div>
+
+
+			<div>
+				<label class="lb" for="temp"><b>Alarm for temperature:</b></label>
+				<input type="number" name="temp" class="spinb" id="spint" min="-20" max="100" step="1" value="50"  size=6>
+			</div>
+
 		</div>
 
-	</div>
+		<br>
+		<br>
 
-	<br>
-	<br>
+		<div class="container1">
 
-	<div class="container1">
+			<a href="#" class="button" id="closeb">
+				Close down
+			</a>
+		
+		</div>
 
-		<a href="#" class="button" id="closeb">
-			Close this page
-		</a>
-
-	</div>
+	</main>
 
 	<div id="results">
 
 	</div>
 	
 </body>
-
-<script>
-
-// Websocket address
-	var myWebSocket = "ws://localhost:8888/ws";
-
-// Websocket variable
-	var socket = new WebSocket(myWebSocket);
-	socket.onerror = socketErrorAlert;
-
-	function socketErrorAlert(event){
-		alert("Server/socket error: " + event.data);
-	}
-
-// Websocket event handlers
-	if (socket){
-		socket.onopen = function() {
-			console.log("Server is ready");
-		}
-		socket.onmessage = function(msg){
-			console.log("Got message from server - calling processResponse");
-			processResponse(msg);
-		}
-		socket.onclose = function() {
-			console.log("Server connection closed");
-		}
-	}
-	else {
-		console.log("Invalid websocket");
-	}
-
-// Json requests
-	var jsonSingleString = '{"action":"single"}';
-	var jsonStatsString = '{"action":"stats", "samples":10}';
-
-// Misc variables
-	var spinBoxH = document.getElementById("spinh");
-	var spinBoxT = document.getElementById("spint");
-	var temp = 0;
-	var hum = 0;
-	var tAlarm = 100;
-	var hAlarm = 100;
-	var hMin, hMax, hAvg, tMin, tMax, tAvg;
-
-// Button handlers
-	var singleRequestButton = document.getElementById("singlereq");
-	var multiRequestButton = document.getElementById("multireq");
-	var statsButton = document.getElementById("statsreq");
-	var closeButton = document.getElementById("closeb");
-
-	singleRequestButton.addEventListener("click", function(event){
-		read1();
-	});
-
-	multiRequestButton.addEventListener("click", function(event){
-		read1();
-		for(var i=0; i<9; i++){
-			setTimeout(read1,1000);
-		}
-	});
-
-	statsButton.addEventListener("click", function(event){
-		socket.send(jsonStatsString);
-	});
-
-	closeButton.addEventListener("click", function(event){
-		socket.close();
-		alert("Server connection closed - Close tab manually");
-	});
-
-	function read1(){
-		if (socket.readyState !== WebSocket.CLOSED && socket.readyState !== WebSocket.CLOSING) {
-			socket.send(jsonSingleString);
-		}
-		else {
-			alert("Server or socket not available");
-		}
-	}
-
-	function processResponse(jsonText){
-		console.log(jsonText);
-		var jsonObject = JSON.parse(jsonText.data);
-		var response = jsonObject["response"];
-		if (response == "reading"){
-			ts = jsonObject["timestamp"];
-			hum = jsonObject["humidity"];
-			temp = jsonObject["temperature"];
-			var text1 = `+++ At timestamp ${ts} Humidity: ${hum} % +++ Temperature: ${temp} Fahrenheit +++`;
-			showResults(text1);
-			hAlarm = spinBoxH.value;
-			if (hum > hAlarm) {
-				showResults("<b>Alarm: humidity level exceeded!</b>");
-			}
-			if (temp > tAlarm) {
-				showResults("<b>Alarm: temperature level exceeded!</b>");
-			}
-			tAlarm = spinBoxT.value;
-			console.log(`Got Humidity ${hum} Temperature ${temp}`);
-		}
-		else if (response == "stats"){
-			console.log("Processing stats");
-			hMin = jsonObject["humidity-min"];
-			hMax = jsonObject["humidity-max"];
-			hAvg = jsonObject["humidity-avg"];
-			tMin = jsonObject["temperature-min"];
-			tMax = jsonObject["temperature-max"];
-			tAvg = jsonObject["temperature-avg"];
-			var text2 = `+++ Minimum Humidity ${hMin} +++ Maximum Humidity ${hMax} +++ Average Humidity ${hAvg}`;
-			showResults(text2);
-			text2 = `+++ Minimum Temperature ${tMin} +++ Maximum Temperature ${tMax} +++ Average Temperature ${tAvg}`;
-			showResults(text2);
-		}
-		else {
-			console.log("Unknown response");
-		}
-
-
-		function showResults(texto){
-			var par = document.createElement('p');
-			par.innerHTML = texto;
-			document.getElementById("results").appendChild(par);
-		}
-	}
-
-
-</script>
 
 </html>

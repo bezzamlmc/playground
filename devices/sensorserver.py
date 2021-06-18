@@ -12,7 +12,10 @@ class Application(tornado.web.Application):
 	def __init__(self,db,ps):
 		logging.basicConfig(filename='sensorserver.log', filemode='w', level=logging.DEBUG)
 		handlers = [(r"/", MainHandler), 
-		(r"/ws", WSHandler)]
+		(r"/ws", WSHandler), 
+		(r'/css/(.*)', tornado.web.StaticFileHandler, {'path': './css'}),
+		(r'/scripts/(.*)', tornado.web.StaticFileHandler, {'path': './scripts'}),
+		]
 		settings = dict(debug=True)
 		tornado.web.Application.__init__(self, handlers, settings)
 		self.ps = ps
