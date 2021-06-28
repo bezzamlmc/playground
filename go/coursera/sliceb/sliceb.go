@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"sort"
 	"strconv"
 	s "strings"
@@ -11,14 +13,20 @@ func main() {
 	//Create a slice with an initial capacity of 3
 	var slicei = make([]int32, 0, 3)
 
+	var reader = bufio.NewReader(os.Stdin)
 
 	var stringi string
 
 	for {
 		fmt.Println("Enter and integer or X to exit")
-		fmt.Scan(&stringi)
-		stringi = s.ToUpper(stringi)
-//		fmt.Printf("full string %q\n", stringi)
+		//Note that ReadString will return the line as byte representation and the new line!
+		line, err := reader.ReadString('\n')
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		fmt.Printf("full string %q\n", stringi)
+		stringi = s.ToUpper(s.TrimSuffix(line, "\r\n"))
 		if stringi == "X" {
 			fmt.Println("Exiting program")
 			break
