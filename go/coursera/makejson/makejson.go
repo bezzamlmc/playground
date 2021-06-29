@@ -26,9 +26,10 @@ func main() {
 		fmt.Println(erra)
 		os.Exit(2)
 	}
-	addresses[name] = address
+	addresses["name"] = name
+	addresses["address"] = address
 
-	fmt.Println("JSON structure is:")
+	fmt.Println("JSON object text:")
 	jsonAddresses, err := json.Marshal(addresses)
 	if err != nil {
 		fmt.Printf("Error: %s", err.Error())
