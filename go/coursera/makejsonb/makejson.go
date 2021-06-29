@@ -13,21 +13,27 @@ func main() {
 	addresses := make(map[string]string)
 	reader := bufio.NewReader(os.Stdin)
 
-	var name, address string
-	fmt.Println("Enter a name:")
-	name, errn := read1Line(reader)
-	if errn != nil {
-		fmt.Println(errn)
-		os.Exit(1)
-	}
-	fmt.Println("Enter the address:")
-	address, erra := read1Line(reader)
-	if erra != nil {
-		fmt.Println(erra)
-		os.Exit(2)
-	}
-	addresses[name] = address
+	for {
+		var name, address string
+		fmt.Println("Enter a name or X to print the JSON structure and exit")
+		name, errn := read1Line(reader)
+		if errn != nil {
+			fmt.Println(errn)
+			continue
+		}
 
+		if name == "X" || name == "x" {
+			break
+		}
+		fmt.Println("Enter the address:")
+		address, erra := read1Line(reader)
+		if erra != nil {
+			fmt.Println(erra)
+			continue
+		}
+		addresses[name] = address
+
+	}
 	fmt.Println("JSON structure is:")
 	jsonAddresses, err := json.Marshal(addresses)
 	if err != nil {
