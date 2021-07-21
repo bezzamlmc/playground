@@ -26,3 +26,7 @@ devices/sensorserver.log
 devices/node_modules/
 devices/scripts/.nvimlog
 go/coursera/ex1/__debug_bin
+go/coursera/trunc/__debug_bin.exe
+*.exe
+go/coursera/trunc/.vscode/
+go/coursera/reviews/
